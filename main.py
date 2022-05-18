@@ -1,4 +1,3 @@
-
 ## "https://sdsu.beta.instructure.com/"
 
 import json
@@ -6,14 +5,13 @@ from datetime import date, datetime
 from canvasapi import Canvas
 import requests as req
 
-
 currentYear = date.today().year
 springStartDate = datetime.strptime(str(currentYear) + "-01-01", '%Y-%m-%d').date()
 fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date()
 
-apiURL = "<API URL>"
+apiURL = "https://sdsu.beta.instructure.com/"
 
-apiKey = "<API KEY>"
+apiKey = "10082~v9Bn1tTNSBncX4DX3JYb45yO8yfJejghWDnXGSBuGUb1t8NUKXQGQjOVChRaxpAf"
 canvas = Canvas(apiURL, apiKey)
 
 account = canvas.get_account(1)
@@ -70,15 +68,22 @@ except:
     print("Error. Please try again later.")
 
 
+# Example naming convention - chem100-01-03_06-spring2022
+
 def createShell(sis_id):
     # Function to create an empty shell
     shell = account.create_course()
-    tempList = sis_id.split('-')
+
+    tempList = sis_id.split('-',1)
     course_code = tempList[0]
-    section = str(tempList[1])
-    name = course_code + '-' + section + '-' + 'Spring' + str(currentYear)
+
+    tempStr = str(tempList[1]).lower()
+    tempList2 = tempStr.split('spring')
+
+    section = str(tempList2[0])
+    name = course_code + '-' + section +  'Spring' + str(currentYear)
     shell.update(
-        course={'course_code': course_code, 'name': name, 'sis_course_id': sis_id, 'term_id': 160,
+        course={'course_code': course_code, 'name': name, 'term_id': 160,
                 'id': shell.id})
     return shell
 
@@ -86,7 +91,7 @@ def createShell(sis_id):
 # Create a function for cross-listing.
 def crossList(sectionID, newCourseID):
     ## data = {'id':sectionID,'new_course_id':newCourseID}
-    header = {'Authorization': 'Bearer "<API KEY>"'}
+    header = {'Authorization': "Bearer 10082~v9Bn1tTNSBncX4DX3JYb45yO8yfJejghWDnXGSBuGUb1t8NUKXQGQjOVChRaxpAf"}
 
     url = "https://sdsu.beta.instructure.com:443/api/v1/sections/{}/crosslist/{}".format(sectionID, newCourseID)
     resp = req.post(url, headers=header)
@@ -104,6 +109,7 @@ try:
 except:
     print("Error. Cannot create a shell.")
     print()
+
 
 # Function to create a new section
 
@@ -130,10 +136,6 @@ for x in searchedIDList:
             print("Course ID: ", canvas.get_course(x))
             print("Section ID: ", y.id)
         else:
-            print("No section ID found for: ",x)
+            print("No section ID found for: ", x)
 
 print(newShell.id)
-
-
-
-
