@@ -11,7 +11,7 @@ fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date(
 
 apiURL = "https://sdsu.beta.instructure.com/"
 
-apiKey = "10082~KQ2Dp7sc6kR1A68PHdhOAWkX2sW88NmsNMAP55gvKXpVjFj6KxCq3z12sXMDR6A7"
+apiKey = ""
 canvas = Canvas(apiURL, apiKey)
 
 
@@ -199,7 +199,7 @@ def createShell(sis_id):
 # Create a function for cross-listing.
 def crossList(sectionID, newCourseID):
     ## data = {'id':sectionID,'new_course_id':newCourseID}
-    header = {'Authorization': "Bearer 10082~KQ2Dp7sc6kR1A68PHdhOAWkX2sW88NmsNMAP55gvKXpVjFj6KxCq3z12sXMDR6A7"}
+    header = {'Authorization': "Bearer "}
 
     url = "https://sdsu.beta.instructure.com:443/api/v1/sections/{}/crosslist/{}".format(sectionID, newCourseID)
     resp = req.post(url, headers=header)
