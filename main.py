@@ -11,7 +11,7 @@ fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date(
 
 apiURL = "https://sdsu.beta.instructure.com/"
 
-apiKey = "10082~v9Bn1tTNSBncX4DX3JYb45yO8yfJejghWDnXGSBuGUb1t8NUKXQGQjOVChRaxpAf"
+apiKey = "10082~KQ2Dp7sc6kR1A68PHdhOAWkX2sW88NmsNMAP55gvKXpVjFj6KxCq3z12sXMDR6A7"
 canvas = Canvas(apiURL, apiKey)
 
 
@@ -24,7 +24,7 @@ courses = account.get_courses()
 courseIDs = []
 sisID = []
 
-tempSISIDs = []
+sisIDsNoCourseCode = []
 tempCourseIDs = []
 
 # Empty list to store only the course IDs of based on the input
@@ -107,10 +107,12 @@ try:
         for c, i in zip(temp1, temp2):
             print('SIS ID: ', c, '', 'Course ID: ', i)
             newDict = {'SIS ID': c, 'Course ID':str(i)}
-            sis = c
+            sis = c.split('-')
+            sis = sis[1]
             id = i
             searchedIDFullForm.append(newDict)
-            tempSISIDs.append(sis)
+
+            sisIDsNoCourseCode.append(sis)
             tempCourseIDs.append(id)
             searchedIDList.append(i)
 
@@ -120,57 +122,55 @@ except:
 
 # Example naming convention - chem100-01-03_06-spring2022
 
+# Function to choose and parse specific courses.
 
 def parseIDSToCrossList(sis_id):
+    l1 = []
+
+    idsFromIteration = []
 
 
-    if "cx" not in sis_id:
-        # Storing counters for first iterations only
-        l1 = []
+    temp = sis_id.split('-', 1)
+    temp = str(temp[1]).lower()
 
-        idsFromFirstIteration = []
-        idsFromSecondIteration = []
+    temp = temp.split('-cx-spring')
+    temp = temp[0]
+    temp = temp.split('_')
 
-        temp = sis_id.split('-', 1)
-        temp = str(temp[1]).lower()
+    for element in temp:
 
-        temp = temp.split('-spring')
-        temp = temp[0]
-        temp = temp.split('_')
+        if '-' in element:
+            listOne = element
+            listOne = listOne.split('-')
+            listOne = [int(item) for item in listOne]
 
-        listOne = temp[0]
-        listOne = listOne.split('-')
-        listOne = [int(item) for item in listOne]
+            i = listOne[0]
+            while i <= listOne[1]:
+                l1.append(i)
+                i = i + 1
 
-        i = listOne[0]
-        while i <= listOne[1]:
-            l1.append(i)
-            i = i + 1
+            for sis, id in zip(sisIDsNoCourseCode, tempCourseIDs):
+                for i in l1:
+                    if str(i).zfill(2) in sis:
+                        idsFromIteration.append(id)
 
-        for sis, id in zip(tempSISIDs, tempCourseIDs):
-            for i in l1:
-                if str(i).zfill(2) in sis:
-                    idsFromFirstIteration.append(id)
+        else:
 
-        listTwo = temp[1:]
-        listTwo = [int(item) for item in listTwo]
+            listTwo = element
+            listTwo = [int(item) for item in listTwo]
 
-        for sis, id in zip(tempSISIDs, tempCourseIDs):
-            for i in listTwo:
-                if str(i).zfill(2) in sis:
-                    idsFromSecondIteration.append(id)
+            for sis, id in zip(sisIDsNoCourseCode, tempCourseIDs):
+                for i in listTwo:
+                    if str(i).zfill(2) in sis:
+                        idsFromIteration.append(id)
 
-        mainList = idsFromFirstIteration + idsFromSecondIteration
 
-        print(idsFromFirstIteration)
-        print(idsFromSecondIteration)
 
-        return mainList
-    
-    else:
-        mainList = []
-        mainList = searchedIDList + mainList
-        return mainList
+
+    return idsFromIteration
+
+
+
 
 
 def createShell(sis_id):
@@ -199,7 +199,7 @@ def createShell(sis_id):
 # Create a function for cross-listing.
 def crossList(sectionID, newCourseID):
     ## data = {'id':sectionID,'new_course_id':newCourseID}
-    header = {'Authorization': "Bearer 10082~v9Bn1tTNSBncX4DX3JYb45yO8yfJejghWDnXGSBuGUb1t8NUKXQGQjOVChRaxpAf"}
+    header = {'Authorization': "Bearer 10082~KQ2Dp7sc6kR1A68PHdhOAWkX2sW88NmsNMAP55gvKXpVjFj6KxCq3z12sXMDR6A7"}
 
     url = "https://sdsu.beta.instructure.com:443/api/v1/sections/{}/crosslist/{}".format(sectionID, newCourseID)
     resp = req.post(url, headers=header)
@@ -241,6 +241,8 @@ def createSection(courseID):
 
 courseIDsToCrossList = parseIDSToCrossList(SISIDInput)
 
+print(courseIDsToCrossList)
+
 for x in courseIDsToCrossList:
     for y in canvas.get_course(x).get_sections():
         if y.id is not None:
@@ -250,6 +252,11 @@ for x in courseIDsToCrossList:
             print("Section ID: ", y.id)
         else:
             print("No section ID found for: ", x)
+
+
+
+
+
 
 
 
