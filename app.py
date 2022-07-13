@@ -1,4 +1,4 @@
-from main import crossList
+from Canvas-Crosslister.main import crossList
 
 
 
