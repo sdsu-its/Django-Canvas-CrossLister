@@ -1,0 +1,10 @@
+README.md
+setup.py
+canvasCrosslister/__init__.py
+canvasCrosslister/data.py
+canvasCrosslister/main.py
+canvasCrosslister.egg-info/PKG-INFO
+canvasCrosslister.egg-info/SOURCES.txt
+canvasCrosslister.egg-info/dependency_links.txt
+canvasCrosslister.egg-info/requires.txt
+canvasCrosslister.egg-info/top_level.txt
