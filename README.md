@@ -18,4 +18,4 @@ Next, Run **app.py**. When asked for input, enter the API Key and the shell name
 **NOTE**: When naming your shell, follow the SDSU ITS naming convention for crosslisting courses. 
 
 For any bug or feedback, send an email to:
-**myeahia@sdsu.edu. **
+myeahia@sdsu.edu
