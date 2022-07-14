@@ -6,6 +6,8 @@ from canvasapi import Canvas
 import requests as req
 
 
+courseToCrosslist = []
+
 def crossList(api,sisInput):
 
 
@@ -226,8 +228,7 @@ def crossList(api,sisInput):
         for y in canvas.get_course(x).get_sections():
             if y.id is not None:
                 newCrossListedSection = crossList(y.id, newShell.id)
-                print(newCrossListedSection)
-                print("Course ID: ", canvas.get_course(x))
+                courseToCrosslist.append(canvas.get_course(x).course_code)
                 print("Section ID: ", y.id)
             else:
                 print("No section ID found for: ", x)
@@ -239,4 +240,4 @@ def crossList(api,sisInput):
 
 
 
-    print(newShell.id)
+    print(courseToCrosslist)

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<section class="app container">
+
+
+<form action="/run/" method="GET">
+
+
+	<div class="container form-group">
+
+    <p style="padding-bottom: 0%">Enter Your Shell Name: </p>
+
+
+
+    <input type="text" class="form-control" placeholder="Shell Name..." name="shell_input" >
+            </br>
+
+
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Next</button>
+                        </span>
+
+  </div>
+
+
+
+</form>
+
+
+
+</section>
+
+
+
+
+{% endblock content %}

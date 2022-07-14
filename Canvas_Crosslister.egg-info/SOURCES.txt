@@ -1,10 +1,9 @@
 README.md
 setup.py
-Canvas-Crosslister/__init__.py
-Canvas-Crosslister/data.py
-Canvas-Crosslister/main.py
 Canvas_Crosslister.egg-info/PKG-INFO
 Canvas_Crosslister.egg-info/SOURCES.txt
 Canvas_Crosslister.egg-info/dependency_links.txt
 Canvas_Crosslister.egg-info/requires.txt
 Canvas_Crosslister.egg-info/top_level.txt
+application/__init__.py
+application/manage.py

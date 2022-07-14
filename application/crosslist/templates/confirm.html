@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container form-group" xmlns="http://www.w3.org/1999/html">
+
+{% if courseList %}
+
+    <p>You have chosen to crosslist the following sections:</p>
+
+    <table>
+    {% for course in courseList %}
+        <tr>
+            <td><li><strong>{{ course }}</strong></li></td>
+        </tr>
+
+
+    {% endfor %}
+
+    </table>
+
+
+    </br>
+
+
+  </div>
+
+<form action="/result/" method="GET">
+
+
+	<div class="container form-group">
+
+    <p style="padding-bottom: 0%;">Please type 'confirm' to continue:</p>
+
+        <input type="text" class="form-control" placeholder="confirm....." name="confirm_input" >
+            </br>
+
+
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Next</button>
+                        </span>
+
+  </div>
+
+</form>
+
+        {% else %}
+<p>The selected sections are <strong>NOT</strong> available for crosslisting.<a style="color: #A6192E" href="{% url 'app' %}"> <strong>Click here</strong></a> to try again.</p>
+
+
+{% endif %}
+
+{% endblock content %}

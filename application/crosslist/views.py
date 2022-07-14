@@ -1,27 +1,27 @@
-## "https://sdsu.beta.instructure.com/"
+from django.shortcuts import render
+
 
 import json
 from datetime import date, datetime
 from canvasapi import Canvas
 import requests as req
+import os
 
 
-def crossList(api,sisInput):
+# These variables are populated from the functions. Created for rendering into the HTLM template.
+from django.views.decorators.cache import never_cache
 
+shellName = None
+canvAPI = None
+noSection = None
+allTheSections = None
+newShellID = None
+canvas = None
+idsToCrosslist = []
 
-    currentYear = date.today().year
-    springStartDate = datetime.strptime(str(currentYear) + "-01-01", '%Y-%m-%d').date()
-    fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date()
+# Main Function for parsing and structuring our data
 
-    apiURL = "https://sdsu.beta.instructure.com/"
-
-    apiKey = api
-
-    canvas = Canvas(apiURL, apiKey)
-
-
-    account = canvas.get_account(1)
-    courses = account.get_courses()
+def parseData(api,sisInput,dataFile):
 
     # Empty lists to store the course IDs and their SIS IDs for all courses
     courseIDs = []
@@ -34,12 +34,35 @@ def crossList(api,sisInput):
     searchedIDList = []
     searchedIDFullForm = []
 
-    # List of course codes that the user likes to crosslist
-    courseIDsToCrossList = []
+    # Empty List to Populate Sections IDs
+
+    sectionIDs = []
+
+    # Empty List to hold sections to crosslist
+
+    sectionsToCrosslist = []
+
+    currentYear = date.today().year
+    springStartDate = datetime.strptime(str(currentYear) + "-01-01", '%Y-%m-%d').date()
+    fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date()
+
+    apiURL = "https://sdsu.beta.instructure.com/"
+
+    apiKey = api
+
+    global canvas
+    canvas = Canvas(apiURL, apiKey)
+
+
+    account = canvas.get_account(1)
+    courses = account.get_courses()
+
+
+
 
     # Open the JSON file an d parse all the SIS IDs and the Course IDs into the designated empty list
 
-    with open('data.json', 'r') as f:
+    with open(dataFile, 'r') as f:
         courseDict = json.load(f)
         for i in courseDict:
             sis = i['SIS ID']
@@ -64,11 +87,9 @@ def crossList(api,sisInput):
 
     crs = stripSISID(SISIDInput)
 
-    # Sections to cross-list
 
 
     try:
-        print("List of Sections: ")
         temp1 = []
         temp2 = []
         for c, i in zip(sisID, courseIDs):
@@ -80,6 +101,8 @@ def crossList(api,sisInput):
         if len(temp1) == 0:
             print("No Sections Available.")
         else:
+            print("List of Sections: ")
+
             for c, i in zip(temp1, temp2):
                 print('SIS ID: ', c, '', 'Course ID: ', i)
                 newDict = {'SIS ID': c, 'Course ID':str(i)}
@@ -176,6 +199,10 @@ def crossList(api,sisInput):
 
 
     # Create a function for cross-listing.
+
+    '''
+    
+    
     def crossList(sectionID, newCourseID):
         ## data = {'id':sectionID,'new_course_id':newCourseID}
         header = {'Authorization': f"Bearer {api}"}
@@ -184,7 +211,7 @@ def crossList(api,sisInput):
         resp = req.post(url, headers=header)
         return resp.status_code
 
-
+    '''
     # Create new Shell
 
 
@@ -192,6 +219,8 @@ def crossList(api,sisInput):
         print("Creating new shell.")
         newShell = createShell(SISIDInput)
         print("Shell Created:", newShell.name)
+        global newShellID
+        newShellID = newShell.id
         print()
     except:
         print("Error. Cannot create a shell.")
@@ -216,21 +245,125 @@ def crossList(api,sisInput):
 
 
 
-
-
     courseIDsToCrossList = parseIDSToCrossList(SISIDInput)
 
-    print(courseIDsToCrossList)
+
+    idsToCrosslist.clear()
+    for ids in courseIDsToCrossList:
+        idsToCrosslist.append(ids)
+
 
     for x in courseIDsToCrossList:
         for y in canvas.get_course(x).get_sections():
             if y.id is not None:
-                newCrossListedSection = crossList(y.id, newShell.id)
-                print(newCrossListedSection)
-                print("Course ID: ", canvas.get_course(x))
-                print("Section ID: ", y.id)
+
+                sectionsToCrosslist.append(canvas.get_course(x).course_code)
             else:
-                print("No section ID found for: ", x)
+                global noSection
+                noSection = "No section ID found for: ", x
+                print(noSection)
+
+
+    print(idsToCrosslist)
+    print()
+    return sectionsToCrosslist
+
+
+
+# Crosslisting function
+
+def crossList(sectionID, newCourseID,api):
+    ## data = {'id':sectionID,'new_course_id':newCourseID}
+    header = {'Authorization': f"Bearer {api}"}
+
+    url = "https://sdsu.beta.instructure.com:443/api/v1/sections/{}/crosslist/{}".format(sectionID, newCourseID)
+    resp = req.post(url, headers=header)
+    return resp.status_code
+
+# Create your views here.
+
+def home(request):
+    return render(request, 'home.html')
+
+def app(request):
+    return render(request, 'app.html')
+
+
+def run(request):
+    shellInput = request.GET.get('shell_input')
+    global shellName
+    shellName = shellInput
+
+    while True:
+        try:
+
+
+
+            shell = shellInput
+
+
+
+
+            return render(request, 'run.html', {'shell': shell})
+
+
+        except(KeyboardInterrupt, EOFError, SystemExit):
+            break
+
+
+
+def confirm(request):
+
+
+    api = request.GET.get('api_input')
+    module_dir = os.path.dirname(__file__)
+    courseData = os.path.join(module_dir, 'data.json')
+
+    global canvAPI
+    canvAPI = api
+
+
+
+    while True:
+        try:
+
+            courseList = parseData(api,shellName,courseData)
+
+
+
+            return render(request, 'confirm.html', {'courseList': courseList})
+
+
+        except(KeyboardInterrupt, EOFError, SystemExit):
+            break
+
+
+
+
+def result(request):
+
+
+    confirmation = request.GET.get('confirm_input')
+    cross = []
+
+
+
+    while True:
+        try:
+
+            for x in idsToCrosslist :
+                for y in canvas.get_course(x).get_sections():
+                    if y.id is not None:
+                        newCrossListedSection = crossList(y.id, newShellID,canvAPI)
+                        print(newCrossListedSection)
+
+                        if newCrossListedSection == 200:
+
+                            cross.append('Crosslisting Success')
+                        else:
+                            cross.append('Fail')
+
+            return render(request, 'result.html', {'cross': cross})
 
 
 
@@ -239,4 +372,15 @@ def crossList(api,sisInput):
 
 
 
-    print(newShell.id)
+
+        except(KeyboardInterrupt, EOFError, SystemExit):
+            break
+
+
+
+'''
+
+
+'''
+
+

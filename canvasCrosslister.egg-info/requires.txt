@@ -1,2 +1,3 @@
 setuptools
 canvasapi
+Django==4.0.6
