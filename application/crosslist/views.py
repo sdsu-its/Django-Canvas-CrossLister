@@ -19,6 +19,12 @@ newShellID = None
 canvas = None
 idsToCrosslist = []
 
+
+
+# Function to get all the sectiins
+
+
+
 # Main Function for parsing and structuring our data
 
 def parseData(api,sisInput,dataFile):
@@ -94,7 +100,7 @@ def parseData(api,sisInput,dataFile):
         temp2 = []
         for c, i in zip(sisID, courseIDs):
             if c.startswith(crs):
-                if c.endswith('Spring' + str(currentYear)):
+                if c.endswith('Fall' + str(currentYear)):
                     temp1.append(c)
                     temp2.append(i)
 
@@ -132,7 +138,7 @@ def parseData(api,sisInput,dataFile):
         temp = sis_id.split('-', 1)
         temp = str(temp[1]).lower()
 
-        temp = temp.split('-cx-spring')
+        temp = temp.split('-cx-fall')
         temp = temp[0]
         temp = temp.split('_')
 
@@ -190,7 +196,7 @@ def parseData(api,sisInput,dataFile):
 
         name = course_code + '-' + section +  term.title() + str(currentYear)
         shell.update(
-            course={'course_code': course_code, 'name': name, 'term_id': 160,
+            course={'course_code': course_code, 'name': name, 'term_id': 197,
                     'id': shell.id})
         return shell
 
@@ -255,16 +261,21 @@ def parseData(api,sisInput,dataFile):
 
     for x in courseIDsToCrossList:
         for y in canvas.get_course(x).get_sections():
+            print(y.id)
             if y.id is not None:
 
-                sectionsToCrosslist.append(canvas.get_course(x).course_code)
+                temp = str(canvas.get_course(x).course_code)
+                sectionsToCrosslist.append(temp)
+                print(sectionsToCrosslist)
+
             else:
                 global noSection
                 noSection = "No section ID found for: ", x
                 print(noSection)
 
 
-    print(idsToCrosslist)
+    print("IDS to Cross-List: ",idsToCrosslist)
+    print("Sections to Cross-List: ",sectionsToCrosslist)
     print()
     return sectionsToCrosslist
 
@@ -359,9 +370,15 @@ def result(request):
 
                         if newCrossListedSection == 200:
 
-                            cross.append('Crosslisting Success')
+                            cross.append(str(canvas.get_course(x).course_code) + " Crosslisting Success.")
+
+                        elif newCrossListedSection == 504 :
+                            cross.append(str(canvas.get_course(x).course_code) + " 504 Response Timeout. Please Check Canvas to Verify.")
+
                         else:
-                            cross.append('Fail')
+                            cross.append(str(canvas.get_course(x).course_code) + " Crosslisting Fail.")
+
+
 
             return render(request, 'result.html', {'cross': cross})
 
