@@ -1,5 +1,5 @@
 # Canvas-CrossLister
-A web application that allows  ITS staff to cross-list multiple courses at once.
+A web application that allows SDSU ITS staff to cross-list multiple courses at once.
 
 Built using
 
