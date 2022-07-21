@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if shell %}
+
+
+<div class="container form-group" xmlns="http://www.w3.org/1999/html">
+
+
+
+    <p>You have chosen the following Shell name:</p>
+
+    <p><strong>{{shell}}</strong></p>
+
+    </br>
+
+
+  </div>
+
+<form action="/confirm/" method="GET">
+
+
+	<div class="container form-group">
+
+    <p style="padding-bottom: 0%;">Enter Your API Key to Run:</p>
+
+        <input type="text" class="form-control" placeholder="API Key....." name="api_input" >
+            </br>
+
+
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Next</button>
+                        </span>
+
+  </div>
+
+
+
+</form>
+
+
+
+
+
+
+{% endif %}
+
+
+{% endblock content %}

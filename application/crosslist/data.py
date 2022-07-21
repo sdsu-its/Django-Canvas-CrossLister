@@ -5,8 +5,8 @@ from canvasapi import Canvas
 
 currentYear = date.today().year
 
-apiURL = "<API URL>"
-apiKey = "<API KEY>"
+apiURL = "https://sdsu.beta.instructure.com/"
+apiKey = "10082~wFagTMowINiICuGWYFlKw4NcBhxsU5m5flNz5wNDu2DMefpM9qrlRai2vbFpItLZ"
 canvas = Canvas(apiURL, apiKey)
 
 account = canvas.get_account(1)

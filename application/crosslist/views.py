@@ -266,7 +266,6 @@ def parseData(api,sisInput,dataFile):
 
                 temp = str(canvas.get_course(x).course_code)
                 sectionsToCrosslist.append(temp)
-                print(sectionsToCrosslist)
 
             else:
                 global noSection

@@ -90,7 +90,7 @@ try:
     temp2 = []
     for c, i in zip(sisID, courseIDs):
         if c.startswith(crs):
-            if c.endswith('Fall' + str(currentYear)):
+            if c.endswith('Spring' + str(currentYear)):
                 temp1.append(c)
                 temp2.append(i)
 
@@ -126,7 +126,7 @@ def parseIDSToCrossList(sis_id):
     temp = sis_id.split('-', 1)
     temp = str(temp[1]).lower()
 
-    temp = temp.split('-cx-fall')
+    temp = temp.split('-cx-spring')
     temp = temp[0]
     temp = temp.split('_')
 
@@ -184,7 +184,7 @@ def createShell(sis_id):
 
     name = course_code + '-' + section +  term.title() + str(currentYear)
     shell.update(
-        course={'course_code': course_code, 'name': name, 'term_id': 197,
+        course={'course_code': course_code, 'name': name, 'term_id': 160,
                 'id': shell.id})
     return shell
 

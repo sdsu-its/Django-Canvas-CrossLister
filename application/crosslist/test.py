@@ -1,10 +1,10 @@
-from mainBackup import crossList
+from application.crosslist.mainBackup import crossList
 
 
 
 
 
-apiKey = input("Input API Key: ")
+apiKey = "10082~wFagTMowINiICuGWYFlKw4NcBhxsU5m5flNz5wNDu2DMefpM9qrlRai2vbFpItLZ"
 sisID = input("Please enter the SIS ID of the new shell: ")
 crossList(apiKey,sisID)
 

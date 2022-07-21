@@ -2,12 +2,11 @@
 {% block content %}
 
 
-<div class="lds-ring">
-
+<div class="container form-group" xmlns="http://www.w3.org/1999/html">
 
 {% if cross %}
 
-    <p><strong>Result:</strong></p>
+    <p>Result:</p>
 
     <table>
     {% for x in cross %}
@@ -23,14 +22,11 @@
 
     </br>
 
-    <p>Please check <a style="color: #A6192E" href="canvas.com"><strong>Canvas</strong></a> to verify.</p>
-
 
   </div>
 
 
 {% endif %}
-
 
 
 {% endblock content %}
