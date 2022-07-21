@@ -11,7 +11,7 @@ fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date(
 
 apiURL = "https://sdsu.beta.instructure.com/"
 
-apiKey = "10082~lqjh9EMeoJemSKzVu2olvD0WTblo2dkpOKWzxhEQGeqoTMtpllAu5ZCnKmtZhVgC"
+apiKey = "10082~wFagTMowINiICuGWYFlKw4NcBhxsU5m5flNz5wNDu2DMefpM9qrlRai2vbFpItLZ"
 
 canvas = Canvas(apiURL, apiKey)
 
@@ -90,7 +90,7 @@ try:
     temp2 = []
     for c, i in zip(sisID, courseIDs):
         if c.startswith(crs):
-            if c.endswith('Spring' + str(currentYear)):
+            if c.endswith('Fall' + str(currentYear)):
                 temp1.append(c)
                 temp2.append(i)
 
@@ -126,7 +126,7 @@ def parseIDSToCrossList(sis_id):
     temp = sis_id.split('-', 1)
     temp = str(temp[1]).lower()
 
-    temp = temp.split('-cx-spring')
+    temp = temp.split('-cx-fall')
     temp = temp[0]
     temp = temp.split('_')
 
@@ -184,7 +184,7 @@ def createShell(sis_id):
 
     name = course_code + '-' + section +  term.title() + str(currentYear)
     shell.update(
-        course={'course_code': course_code, 'name': name, 'term_id': 160,
+        course={'course_code': course_code, 'name': name, 'term_id': 197,
                 'id': shell.id})
     return shell
 
@@ -195,7 +195,7 @@ def createShell(sis_id):
 # Create a function for cross-listing.
 def crossList(sectionID, newCourseID):
     ## data = {'id':sectionID,'new_course_id':newCourseID}
-    header = {'Authorization': "Bearer 10082~lqjh9EMeoJemSKzVu2olvD0WTblo2dkpOKWzxhEQGeqoTMtpllAu5ZCnKmtZhVgC"}
+    header = {'Authorization': "Bearer 10082~wFagTMowINiICuGWYFlKw4NcBhxsU5m5flNz5wNDu2DMefpM9qrlRai2vbFpItLZ"}
 
     url = "https://sdsu.beta.instructure.com:443/api/v1/sections/{}/crosslist/{}".format(sectionID, newCourseID)
     resp = req.post(url, headers=header)
