@@ -1,5 +1,5 @@
 # Canvas-CrossLister
-A web application that allows SDSU ITS staff to cross-lis, combine and transfer the enrollments of a multiple sections of a course. 
+A web application that allows SDSU ITS staff to cross-list, combine and transfer the enrollments of a multiple sections of a course. 
 
 Built using
 
