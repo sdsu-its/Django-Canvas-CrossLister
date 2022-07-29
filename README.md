@@ -45,7 +45,7 @@ IMPORTANT: Not all the time the URL of the localhost is set to <strong>127.0.0.1
 
 There is a data.json file that holds all our data and class information. This is one of the core components of the application.
 
-Depending which CANVAS environmnent you are trying to connect the application, you will have to pull data from the respective instance. The current version has data.json loaded from the beta instance. 
+Depending which Canvas environmnent you are trying to connect the application, you will have to pull data from the respective instance. The current version has data.json loaded from the beta instance. 
 
 Just in case you need to update the data.json for running the application on production,you will have to run the <strong>data.py</strong> first to update the data.json with production data. 
 
