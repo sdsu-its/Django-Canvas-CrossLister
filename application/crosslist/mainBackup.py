@@ -11,7 +11,7 @@ fallStartDate = datetime.strptime(str(currentYear) + "-08-01", '%Y-%m-%d').date(
 
 apiURL = "https://sdsu.beta.instructure.com/"
 
-apiKey = "<ENTER API KEY>"
+apiKey = "API KEY HERE"
 
 canvas = Canvas(apiURL, apiKey)
 
