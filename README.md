@@ -47,7 +47,7 @@ There is a data.json file that holds all our data and class information. This is
 
 Depending which Canvas environmnent you are trying to connect the application, you will have to pull data from the respective instance. The current version has data.json loaded from the beta instance. 
 
-Just in case you need to update the data.json for running the application on production,you will have to run the <strong>data.py</strong> first to update the data.json with production data. You will need your API key from your respective instance (e.g. beta or production) for this process. Open the <strong>data.py</strong> in any text editor, and then enter your key manually where it says <strong>API KEY HERE</strong>. 
+Just in case you need to update the data.json for running the application on production,you will have to run the <strong>data.py</strong> first to update the data.json with production data. You will need your API key from your respective instance (e.g. beta or production) for this process. 
 
 Go to the <strong>crosslist</strong> folder under the <strong>appliction</strong> directory. Run the following command on your terminal:
 
