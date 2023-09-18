@@ -164,7 +164,7 @@ As of current, these are the following limitations you should be aware of when u
 
 </pre>
 
-For bugs, feedbacks or suggestions you can contact the following email:
+For bugs, feedbacks or suggestions you can contact Mirza:
 
 <strong>myeahia@sdsu.edu</strong>
 
