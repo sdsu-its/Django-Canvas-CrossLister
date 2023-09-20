@@ -1,4 +1,8 @@
 # Canvas-CrossLister
+
+![Canvas Crosslister Preview](https://github.com/sdsu-its/Django-Canvas-CrossLister/assets/23009939/02ed5b6a-8f67-45ff-a6f9-ba05b69ad333)
+
+
 A web application that allows SDSU ITS staff to cross-list, combine and transfer the enrollments of a multiple sections of a course. 
 
 Built using
